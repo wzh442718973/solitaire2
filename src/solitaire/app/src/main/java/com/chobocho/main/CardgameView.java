@@ -277,14 +277,6 @@ public class CardgameView extends View implements GameObserver {
             }
         }
 
-        int screenW = 1080;
-        int screenH = 1920;
-
-        if (solitare.isPlayState()) {
-            paint.setColor(Color.BLUE);
-            paint.setTextSize(60);
-            canvas.drawText("Move: " + Integer.toString(solitare.getMoveCount()), 50, screenH - 80, paint);
-        }
     }
 
     public boolean onTouchEvent(MotionEvent event) {

@@ -6,6 +6,7 @@ import com.chobocho.deck.Deck;
  * 
  */
 public interface Solitare {
+    String Version = "0.1105.TD2";
     int PLAY_DECK = 0;
     int RESULT_DECK_1 = 1;
     int RESULT_DECK_2 = 2;

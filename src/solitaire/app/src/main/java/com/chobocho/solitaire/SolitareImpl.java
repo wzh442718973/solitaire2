@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class SolitareImpl implements Solitare {
     private static final String TAG = "SolitareImpl";
-    private static final String Version = "0.1105.TC2";
     GameState state;
     IdleState idleState;
     PlayState playState;
