@@ -47,4 +47,20 @@ public class MainActivity extends AppCompatActivity {
         }
         return "";
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (gameView != null) {
+            gameView.pauseGame();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (gameView != null) {
+            gameView.resumeGame();
+        }
+    }
 }

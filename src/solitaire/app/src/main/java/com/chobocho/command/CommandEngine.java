@@ -25,6 +25,7 @@ public class CommandEngine {
         functionMap.put(PlayCommand.PAUSE, new PauseFunction());
         functionMap.put(PlayCommand.IDLE, new IdleFunction());
         functionMap.put(PlayCommand.WIN, new WinFunction());
+        functionMap.put(PlayCommand.CONFIG, new ConfigFunction());
         functionMap.put(PlayCommand.BACK, new RevertFunction());
     }
 

@@ -34,6 +34,7 @@ public interface Solitare {
     public boolean pause();
     public boolean winState();
     public boolean idle();
+    public boolean config();
     public void register(GameObserver observer);
 
     public boolean isPlayState();

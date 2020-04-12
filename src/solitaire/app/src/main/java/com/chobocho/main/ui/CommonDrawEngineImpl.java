@@ -26,8 +26,8 @@ public class CommonDrawEngineImpl implements DrawEngine {
     private void onDrawCommon(Canvas g, Bitmap[] cardImages, Bitmap[] buttonImages) {
         int screenW = 1080;
         int screenH = 1920;
-        int CARD_BG_IMAGE =0;
-        int CARD_NONE_IMAGE = boardProfile.getBG();
+        int CARD_BG_IMAGE = boardProfile.getBG();
+        int CARD_NONE_IMAGE = 53;
         int CARD_ABG_IMAGE = 54;
 
         int width = 140;

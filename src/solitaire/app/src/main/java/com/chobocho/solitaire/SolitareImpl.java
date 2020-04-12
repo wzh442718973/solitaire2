@@ -26,8 +26,7 @@ public class SolitareImpl implements Solitare {
         endState = new EndState();
         configState = new ConfigState();
 
-        //setState(Solitare.IDLE_STATE);
-        setState(Solitare.CONFIG_STATE);
+        setState(Solitare.IDLE_STATE);
     }
 
     public void register(GameObserver observer) {
@@ -67,6 +66,11 @@ public class SolitareImpl implements Solitare {
     }
     public boolean idle() {
         return setState(Solitare.IDLE_STATE);
+    }
+
+    @Override
+    public boolean config() {
+        return setState(Solitare.CONFIG_STATE);
     }
 
     public boolean openDeck(int deck) {

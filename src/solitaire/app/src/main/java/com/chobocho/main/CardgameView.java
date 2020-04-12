@@ -98,7 +98,7 @@ public class CardgameView extends View implements GameObserver {
 
         drawEngine = this.idleDrawEngine;
 
-        commandFactory = new AndroidCommandFactory();
+        commandFactory = new AndroidCommandFactory(profile);
         this.solitare.register(commandFactory);
 
        //createPlayerThread();
@@ -118,19 +118,19 @@ public class CardgameView extends View implements GameObserver {
 
     private void createPlayerThread() {
         Log.d(LOG_TAG,"createPlayerThread");
-        playerHandlerThread = new HandlerThread("Player Processing Thread");
-        playerHandlerThread.start();
-        playerHandler = new Handler(playerHandlerThread.getLooper()){
-            @Override
-            public void handleMessage(Message msg){
-                if (solitare != null && solitare.isPlayState()) {
-                    if (playerHandler.hasMessages(EMPTY_MESSAGE)) {
-                        playerHandler.removeMessages(EMPTY_MESSAGE);
-                    }
-                    playerHandler.sendEmptyMessageDelayed(EMPTY_MESSAGE, gameSpeed);
-                }
-            }
-        };
+//        playerHandlerThread = new HandlerThread("Player Processing Thread");
+//        playerHandlerThread.start();
+//        playerHandler = new Handler(playerHandlerThread.getLooper()){
+//            @Override
+//            public void handleMessage(Message msg){
+//                if (solitare != null && solitare.isPlayState()) {
+//                    if (playerHandler.hasMessages(EMPTY_MESSAGE)) {
+//                        playerHandler.removeMessages(EMPTY_MESSAGE);
+//                    }
+//                    playerHandler.sendEmptyMessageDelayed(EMPTY_MESSAGE, gameSpeed);
+//                }
+//            }
+//        };
     }
 
     public void startGame() {
@@ -139,19 +139,16 @@ public class CardgameView extends View implements GameObserver {
 
     public void pauseGame() {
         Log.d(LOG_TAG, "pauseGame");
-        if (playerHandler.hasMessages(EMPTY_MESSAGE)) {
-            playerHandler.removeMessages(EMPTY_MESSAGE);
-            Log.d(LOG_TAG, "Removed event");
+        if (solitare != null && solitare.isPlayState()) {
+            solitare.pause();
         }
-        if (playerHandlerThread != null) {
-            playerHandlerThread.quit();
-        }
-        saveScore();
+        saveConfig();
     }
 
     public void resumeGame() {
         Log.d(LOG_TAG, "resumeGame");
-        createPlayerThread();
+        //createPlayerThread();
+        loadConfig();
     }
 
     public void update() {
@@ -405,21 +402,20 @@ public class CardgameView extends View implements GameObserver {
     }
 
 
-    private void loadHIghScore() {
-        Log.d(LOG_TAG, "load()");
-        SharedPreferences pref = mContext.getSharedPreferences("choboTetris", MODE_PRIVATE);
-        this.highScore = pref.getInt("highscore", 0);
+    private void loadConfig() {
+        Log.d(LOG_TAG, "loadConfig()");
+        SharedPreferences pref = mContext.getSharedPreferences("Solitaire", MODE_PRIVATE);
+        int bgImage = pref.getInt("bgImage", 0);
+        profile.setBG(bgImage);
     }
 
-    private void saveScore() {
-        //Log.d(LOG_TAG, "saveScore()");
-        //if (this.highScore > player.getHighScore()) {
-        //    return;
-        //}
-        //SharedPreferences pref = mContext.getSharedPreferences("choboTetris", MODE_PRIVATE);
-        //SharedPreferences.Editor edit = pref.edit();
+    private void saveConfig() {
+        Log.d(LOG_TAG, "saveConfig()");
 
-        //edit.putInt("highscore", player.getHighScore());
-        //edit.commit();
+        SharedPreferences pref = mContext.getSharedPreferences("Solitaire", MODE_PRIVATE);
+        SharedPreferences.Editor edit = pref.edit();
+
+        edit.putInt("bgImage", profile.getBG());
+        edit.commit();
     }
 }
