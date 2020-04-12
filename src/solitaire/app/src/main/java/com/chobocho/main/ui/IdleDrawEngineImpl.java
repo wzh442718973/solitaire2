@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.chobocho.main.AndroidLog;
+import com.chobocho.main.BoardProfile;
 import com.chobocho.solitaire.Solitare;
 
 import java.util.LinkedList;
@@ -16,13 +17,18 @@ public class IdleDrawEngineImpl implements DrawEngine {
     int screenW = 1080;
     int screenH = 1920;
     int PLAY_GAME_IMAGE = 1;
-    int CARD_BG_IMAGE = 0;
 
     int width = 140;
     int height = 210;
     int cardCap = 30;
 
     Paint paint = new Paint();
+
+    BoardProfile boardProfile;
+    public IdleDrawEngineImpl(BoardProfile profile) {
+        boardProfile = profile;
+    }
+
 
     @Override
     public void onDraw(Canvas g, Solitare game, LinkedList<Integer> hideCard, Bitmap[] cardImages, Bitmap[] buttonImages) {
@@ -35,10 +41,12 @@ public class IdleDrawEngineImpl implements DrawEngine {
 
         paint.setTextSize(12);
         paint.setColor(Color.BLUE);
-        g.drawText("Version: " + game.Version, 50, screenH - 180, paint);
+        g.drawText("Version: " + boardProfile.getVersion(), 50, screenH - 180, paint);
     }
 
     private void onDrawBoardDeck(Canvas g, Bitmap[] cardImages, Solitare game) {
+        int CARD_BG_IMAGE = boardProfile.getBG();
+
         for (int i = 6; i >= 0; --i) {
             int cap = 0;
             int x1 = 10 + width * i + 10 * i;

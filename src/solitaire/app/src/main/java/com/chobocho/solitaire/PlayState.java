@@ -5,7 +5,6 @@ import com.chobocho.deck.*;
 import com.chobocho.util.CLog;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class PlayState extends GameState {
     final static String TAG = "PlayState";
@@ -255,7 +254,7 @@ public class PlayState extends GameState {
         return result.toString();
     }
 
-    public int getState() { return PLAY_STATE; }
+    public int getState() { return Solitare.PLAY_STATE; }
 
     @Override
     public boolean isPlayState() {

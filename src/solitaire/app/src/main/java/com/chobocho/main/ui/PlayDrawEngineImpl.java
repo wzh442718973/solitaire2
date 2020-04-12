@@ -8,6 +8,7 @@ import android.graphics.Rect;
 
 import com.chobocho.card.Card;
 import com.chobocho.deck.Deck;
+import com.chobocho.main.BoardProfile;
 import com.chobocho.solitaire.Solitare;
 
 import java.util.LinkedList;
@@ -18,7 +19,6 @@ public class PlayDrawEngineImpl implements DrawEngine {
     int screenH = 1920 - 100;
 
     int CARD_NONE_IMAGE = 53;
-    int CARD_BG_IMAGE = 0;
     int PAUSE_BUTTON = 3;
     int REVERT_BUTTON = 4;
 
@@ -27,8 +27,10 @@ public class PlayDrawEngineImpl implements DrawEngine {
     int cardCap = 30;
     Paint paint = new Paint();
 
-    public PlayDrawEngineImpl() {
+    BoardProfile boardProfile;
 
+    public PlayDrawEngineImpl(BoardProfile profile) {
+        boardProfile = profile;
     }
 
     @Override
@@ -52,6 +54,7 @@ public class PlayDrawEngineImpl implements DrawEngine {
     }
 
     private void onDrawBoardDeck(Canvas g, Bitmap[] cardImages, Solitare game, LinkedList<Integer> hideCard) {
+        int  CARD_BG_IMAGE = boardProfile.bgImage;
         Deck[] decks = new Deck[7];
 
         for (int i = 0; i < 7; i++) {

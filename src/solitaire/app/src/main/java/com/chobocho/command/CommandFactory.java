@@ -1,7 +1,7 @@
 package com.chobocho.command;
 
 import com.chobocho.solitaire.GameObserver;
-import com.chobocho.solitaire.GameState;
+import com.chobocho.solitaire.Solitare;
 import com.chobocho.util.CLog;
 
 public abstract class CommandFactory implements GameObserver {
@@ -15,21 +15,25 @@ public abstract class CommandFactory implements GameObserver {
     protected CommandFactoryState playState;
     protected CommandFactoryState pauseState;
     protected CommandFactoryState endState;
+    protected CommandFactoryState configState;
     @Override
     public void updateState(int nextState) {
         CLog.i(TAG, "updateState: " + nextState);
         switch (nextState) {
-            case GameState.IDLE_STATE:
+            case Solitare.IDLE_STATE:
                 state=idleState;
                 break;
-            case GameState.PLAY_STATE:
+            case Solitare.PLAY_STATE:
                 state=playState;
                 break;
-            case GameState.PAUSE_STATE:
+            case Solitare.PAUSE_STATE:
                 state=pauseState;
                 break;
-            case GameState.END_STATE:
+            case Solitare.END_STATE:
                 state=endState;
+                break;
+            case Solitare.CONFIG_STATE:
+                state=configState;
                 break;
             default:
                 break;

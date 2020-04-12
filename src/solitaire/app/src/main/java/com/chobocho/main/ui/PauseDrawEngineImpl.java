@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.chobocho.main.BoardProfile;
 import com.chobocho.solitaire.Solitare;
 
 import java.util.LinkedList;
@@ -17,17 +18,19 @@ public class PauseDrawEngineImpl implements DrawEngine {
     int height = 210;
     int cardCap = 30;
 
-    int CARD_BG_IMAGE = 0;
     int NEW_GAME_IMAGE = 0;
     int RESUME_GAME_IMAGE = 2;
     Paint paint = new Paint();
 
+    BoardProfile boardProfile;
 
-    public PauseDrawEngineImpl() {
+    public PauseDrawEngineImpl(BoardProfile profile) {
+        boardProfile = profile;
     }
 
     @Override
     public void onDraw(Canvas g, Solitare game, LinkedList<Integer> hideCard, Bitmap[] cardImages, Bitmap[] buttonImages) {
+        int CARD_BG_IMAGE = boardProfile.getBG();
 
         for (int i = 6; i >= 0; --i) {
             int cap = 0;

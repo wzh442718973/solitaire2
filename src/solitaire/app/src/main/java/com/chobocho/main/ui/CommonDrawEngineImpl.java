@@ -6,11 +6,18 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.chobocho.main.BoardProfile;
 import com.chobocho.solitaire.Solitare;
 
 import java.util.LinkedList;
 
 public class CommonDrawEngineImpl implements DrawEngine {
+    BoardProfile boardProfile;
+
+    public CommonDrawEngineImpl(BoardProfile profile) {
+        boardProfile = profile;
+    }
+
     @Override
     public void onDraw(Canvas g, Solitare game, LinkedList<Integer> hideCard, Bitmap[] cardImages, Bitmap[] buttonImages) {
         onDrawCommon(g, cardImages, buttonImages);
@@ -19,8 +26,8 @@ public class CommonDrawEngineImpl implements DrawEngine {
     private void onDrawCommon(Canvas g, Bitmap[] cardImages, Bitmap[] buttonImages) {
         int screenW = 1080;
         int screenH = 1920;
-        int CARD_BG_IMAGE = 0;
-        int CARD_NONE_IMAGE = 53;
+        int CARD_BG_IMAGE =0;
+        int CARD_NONE_IMAGE = boardProfile.getBG();
         int CARD_ABG_IMAGE = 54;
 
         int width = 140;

@@ -1,5 +1,6 @@
 package com.chobocho.main;
 import com.chobocho.command.CommandFactory;
+import com.chobocho.main.cmd.WinConfigCommandFactoryStateImpl;
 import com.chobocho.main.cmd.WinEndCommandFactoryStateImpl;
 import com.chobocho.main.cmd.WinIdleCommandFactoryStateImpl;
 import com.chobocho.main.cmd.WinPauseCommandFactoryStateImpl;
@@ -12,6 +13,7 @@ public class AndroidCommandFactory extends CommandFactory {
         playState = new WinPlayCommandFactoryStateImpl();
         pauseState = new WinPauseCommandFactoryStateImpl();
         endState = new WinEndCommandFactoryStateImpl();
+        configState = new WinConfigCommandFactoryStateImpl();
     }
 
 }

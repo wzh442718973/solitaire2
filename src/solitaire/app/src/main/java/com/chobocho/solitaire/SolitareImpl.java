@@ -14,6 +14,7 @@ public class SolitareImpl implements Solitare {
     PlayState playState;
     PauseState pauseState;
     EndState endState;
+    ConfigState configState;
     ArrayList<GameObserver> observers = new ArrayList<>();
     CLog log;
 
@@ -23,8 +24,10 @@ public class SolitareImpl implements Solitare {
         playState = new PlayState();
         pauseState = new PauseState();
         endState = new EndState();
+        configState = new ConfigState();
 
-        setState(PlayState.IDLE_STATE);
+        //setState(Solitare.IDLE_STATE);
+        setState(Solitare.CONFIG_STATE);
     }
 
     public void register(GameObserver observer) {
@@ -52,18 +55,18 @@ public class SolitareImpl implements Solitare {
     }
 
     public boolean play() {
-        return setState(GameState.PLAY_STATE);
+        return setState(Solitare.PLAY_STATE);
     }
 
     public boolean pause() {
-        return setState(GameState.PAUSE_STATE);
+        return setState(Solitare.PAUSE_STATE);
     }
 
     public boolean winState() {
-        return setState(GameState.END_STATE);
+        return setState(Solitare.END_STATE);
     }
     public boolean idle() {
-        return setState(GameState.IDLE_STATE);
+        return setState(Solitare.IDLE_STATE);
     }
 
     public boolean openDeck(int deck) {
@@ -73,17 +76,17 @@ public class SolitareImpl implements Solitare {
 
     private boolean setState(int newState) {
         switch (newState) {
-            case GameState.IDLE_STATE:
+            case Solitare.IDLE_STATE:
                 playState.initGame();
                 state = idleState;
                 break;
-            case GameState.PLAY_STATE:
+            case Solitare.PLAY_STATE:
                 state = playState;
                 break;
-            case GameState.PAUSE_STATE:
+            case Solitare.PAUSE_STATE:
                 state = pauseState;
                 break;
-            case GameState.END_STATE:
+            case Solitare.END_STATE:
                 Card[] cards = new Card[4];
                 cards[0] = playState.getDeck(Solitare.RESULT_DECK_1).top();
                 cards[1] = playState.getDeck(Solitare.RESULT_DECK_2).top();
@@ -92,6 +95,9 @@ public class SolitareImpl implements Solitare {
                 playState.initGame();
                 state = endState;
                 state.pushCard(cards);
+                break;
+            case Solitare.CONFIG_STATE:
+                state = configState;
                 break;
             default:
                 break;

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
@@ -24,13 +23,13 @@ import com.chobocho.command.DeckPositoinManager;
 import com.chobocho.command.PlayCommand;
 import com.chobocho.main.cmd.DeckPositoinManagerImpl;
 import com.chobocho.main.ui.CommonDrawEngineImpl;
+import com.chobocho.main.ui.ConfigDrawEngineImpl;
 import com.chobocho.main.ui.DrawEngine;
 import com.chobocho.main.ui.EndDrawEngineImpl;
 import com.chobocho.main.ui.IdleDrawEngineImpl;
 import com.chobocho.main.ui.PauseDrawEngineImpl;
 import com.chobocho.main.ui.PlayDrawEngineImpl;
 import com.chobocho.solitaire.GameObserver;
-import com.chobocho.solitaire.GameState;
 import com.chobocho.solitaire.Solitare;
 
 import java.util.LinkedList;
@@ -46,6 +45,7 @@ public class CardgameView extends View implements GameObserver {
     private boolean isSetScale = false;
     private boolean needScaleCanvas = false;
 
+    private BoardProfile profile;
     private Solitare solitare;
     private CommandEngine cmdEngine;
 
@@ -55,11 +55,12 @@ public class CardgameView extends View implements GameObserver {
     private DrawEngine pauseDrawEngine;
     private DrawEngine endDrawEngine;
     private DrawEngine commonDrawEngine;
+    private DrawEngine configDrawEngine;
     private CommandFactory commandFactory;
     private DeckPositoinManager deckPositoinManager;
 
-    Bitmap[] cardImages   = new Bitmap[55];
-    Bitmap[]  buttonImage = new Bitmap[5];
+    Bitmap[] cardImages;
+    Bitmap[] buttonImage;
 
     private static final int EMPTY_MESSAGE = 0;
     private HandlerThread playerHandlerThread;
@@ -77,20 +78,22 @@ public class CardgameView extends View implements GameObserver {
     private boolean isMovingCard = false;
     public LinkedList<Integer> hideCard = new LinkedList<Integer>();
 
-    public CardgameView(Context context, Solitare solitare, CommandEngine cmdEngine) {
+    public CardgameView(Context context, BoardProfile profile, Solitare solitare, CommandEngine cmdEngine) {
         super(context);
         this.mContext = context;
+        this.profile = profile;
         this.solitare = solitare;
         this.cmdEngine = cmdEngine;
         isSetScale = false;
         needScaleCanvas = false;
         loadImage();
 
-        this.idleDrawEngine = new IdleDrawEngineImpl();
-        this.playDrawEngine = new PlayDrawEngineImpl();
-        this.pauseDrawEngine = new PauseDrawEngineImpl();
-        this.endDrawEngine = new EndDrawEngineImpl();
-        this.commonDrawEngine = new CommonDrawEngineImpl();
+        this.idleDrawEngine = new IdleDrawEngineImpl(profile);
+        this.playDrawEngine = new PlayDrawEngineImpl(profile);
+        this.pauseDrawEngine = new PauseDrawEngineImpl(profile);
+        this.endDrawEngine = new EndDrawEngineImpl(profile);
+        this.commonDrawEngine = new CommonDrawEngineImpl(profile);
+        this.configDrawEngine = new ConfigDrawEngineImpl(profile);
         this.deckPositoinManager = new DeckPositoinManagerImpl();
 
         drawEngine = this.idleDrawEngine;
@@ -102,80 +105,15 @@ public class CardgameView extends View implements GameObserver {
     }
 
     private void loadImage() {
-        int[] imageName = {
-                R.drawable.bg,
-                R.drawable.ca,
-                R.drawable.c2,
-                R.drawable.c3,
-                R.drawable.c4,
-                R.drawable.c5,
-                R.drawable.c6,
-                R.drawable.c7,
-                R.drawable.c8,
-                R.drawable.c9,
-                R.drawable.c10,
-                R.drawable.cj,
-                R.drawable.cq,
-                R.drawable.ck,
-                R.drawable.da,
-                R.drawable.d2,
-                R.drawable.d3,
-                R.drawable.d4,
-                R.drawable.d5,
-                R.drawable.d6,
-                R.drawable.d7,
-                R.drawable.d8,
-                R.drawable.d9,
-                R.drawable.d10,
-                R.drawable.dj,
-                R.drawable.dq,
-                R.drawable.dk,
-                R.drawable.ha,
-                R.drawable.h2,
-                R.drawable.h3,
-                R.drawable.h4,
-                R.drawable.h5,
-                R.drawable.h6,
-                R.drawable.h7,
-                R.drawable.h8,
-                R.drawable.h9,
-                R.drawable.h10,
-                R.drawable.hj,
-                R.drawable.hq,
-                R.drawable.hk,
-                R.drawable.sa,
-                R.drawable.s2,
-                R.drawable.s3,
-                R.drawable.s4,
-                R.drawable.s5,
-                R.drawable.s6,
-                R.drawable.s7,
-                R.drawable.s8,
-                R.drawable.s9,
-                R.drawable.s10,
-                R.drawable.sj,
-                R.drawable.sq,
-                R.drawable.sk,
-                R.drawable.none,
-                R.drawable.abg
-        };
-
-        for (int i = 0; i < 55; i++) {
-            cardImages[i] = BitmapFactory.decodeResource(mContext.getResources(), imageName[i]);
+        cardImages  = new Bitmap[profile.imageName.length+1];
+        for (int i = 0; i < profile.imageName.length; i++) {
+            cardImages[i] = BitmapFactory.decodeResource(mContext.getResources(), profile.imageName[i]);
         }
 
-        int[] buttonImageName = {
-                R.drawable.newgame,
-                R.drawable.start,
-                R.drawable.resume,
-                R.drawable.pause,
-                R.drawable.revert
-        };
-
-        for (int i = 0; i < 5; i++) {
-            buttonImage[i] = BitmapFactory.decodeResource(mContext.getResources(), buttonImageName[i]);
+        buttonImage = new Bitmap[profile.buttonImageName.length+1];
+        for (int i = 0; i < profile.buttonImageName.length; i++) {
+            buttonImage[i] = BitmapFactory.decodeResource(mContext.getResources(), profile.buttonImageName[i]);
         }
-
     }
 
     private void createPlayerThread() {
@@ -224,17 +162,20 @@ public class CardgameView extends View implements GameObserver {
     public void updateState(int state) {
         Log.i(LOG_TAG, "STATE: " + state);
         switch (state) {
-            case GameState.IDLE_STATE:
+            case Solitare.IDLE_STATE:
                 drawEngine = idleDrawEngine;
                 break;
-            case GameState.PLAY_STATE:
+            case Solitare.PLAY_STATE:
                 drawEngine = playDrawEngine;
                 break;
-            case GameState.PAUSE_STATE:
+            case Solitare.PAUSE_STATE:
                 drawEngine = pauseDrawEngine;
                 break;
-            case GameState.END_STATE:
+            case Solitare.END_STATE:
                 drawEngine = endDrawEngine;
+                break;
+            case Solitare.CONFIG_STATE:
+                drawEngine = configDrawEngine;
                 break;
             default:
                 break;

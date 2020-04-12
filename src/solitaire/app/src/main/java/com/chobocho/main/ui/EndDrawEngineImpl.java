@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import com.chobocho.card.Card;
 import com.chobocho.deck.Deck;
 import com.chobocho.deck.PlayDeck;
+import com.chobocho.main.BoardProfile;
 import com.chobocho.solitaire.Solitare;
 
 import java.util.LinkedList;
@@ -19,17 +20,16 @@ public class EndDrawEngineImpl implements DrawEngine {
     int screenH = 1920;
 
     int NEW_GAME_IMAGE = 0;
-    int CARD_BG_IMAGE = 0;
     int CARD_NONE_IMAGE = 53;
-    int CARD_ABG_IMAGE = 54;
 
     int width = 140;
     int height = 210;
     int cardCap = 30;
     Paint paint = new Paint();
 
-    public EndDrawEngineImpl() {
-
+    BoardProfile boardProfile;
+    public EndDrawEngineImpl(BoardProfile profile) {
+        boardProfile = profile;
     }
 
     @Override
