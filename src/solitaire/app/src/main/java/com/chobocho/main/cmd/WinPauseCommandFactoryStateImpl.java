@@ -43,6 +43,7 @@ public class WinPauseCommandFactoryStateImpl extends PauseCommandFactoryStateImp
         int y1 = (screenH-200)/2;
 
         buttons.push(new ButtonPosition(PlayCommand.PLAY, x1, y1-300, x1+400,y1-100));
-        buttons.push(new ButtonPosition(PlayCommand.IDLE, x1, y1+300, x1+400,y1+400));
+        buttons.push(new ButtonPosition(PlayCommand.IDLE, x1, y1, x1+400,y1+200));
+        buttons.push(new ButtonPosition(PlayCommand.CONFIG, x1, y1+300, x1+400,y1+500));
     }
 }

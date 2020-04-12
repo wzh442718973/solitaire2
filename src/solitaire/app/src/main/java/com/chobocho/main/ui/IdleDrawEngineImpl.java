@@ -39,7 +39,7 @@ public class IdleDrawEngineImpl implements DrawEngine {
         g.drawBitmap(buttonImages[PLAY_GAME_IMAGE], null, new Rect( x1,  y1, x1+400, y1+200), paint);
         AndroidLog.i(TAG, "Event:" + Integer.toString(x1) + " : " + Integer.toString(y1));
 
-        paint.setTextSize(12);
+        paint.setTextSize(16);
         paint.setColor(Color.BLUE);
         g.drawText("Version: " + boardProfile.getVersion(), 50, screenH - 180, paint);
     }

@@ -13,11 +13,13 @@ public class BoardProfile {
     final static public int BG7 = 61;
     final static public int BG8 = 62;
 
+    final static public int CONFIG_BUTTON = 5;
+
     public int bgImage;
     String version ="";
 
     public BoardProfile(String version) {
-        bgImage = BG2;
+        bgImage = BG0;
         this.version = version;
     }
 
@@ -104,7 +106,8 @@ public class BoardProfile {
             R.drawable.start,
             R.drawable.resume,
             R.drawable.pause,
-            R.drawable.revert
+            R.drawable.revert,
+            R.drawable.config
     };
 
 }
