@@ -8,15 +8,10 @@ import com.chobocho.solitaire.Solitare;
 
 public class WinPlayCommandFactoryStateImpl extends PlayCommandFactoryStateImpl implements CommandFactoryState {
     final static String TAG = "WinPlayCommandFactoryStateImpl";
-    BoardProfile boardProfile;
-    int width = 140;
-    int heigth = 210;
+
 
     public WinPlayCommandFactoryStateImpl(BoardProfile profile) {
-        super(profile.screenWidth(), profile.screenHeight());
-        this.boardProfile = profile;
-        width = profile.cardWidth();
-        heigth = profile.cardHeight();
+        super(profile);;
     }
 
     @Override
@@ -49,12 +44,14 @@ public class WinPlayCommandFactoryStateImpl extends PlayCommandFactoryStateImpl 
 	@Override
     public void addButtons() {
         AndroidLog.i(TAG, "addButtons");
-        int x1 = screenW - 400;
-        int y1 = screenH - 200;
-        buttons.push(new ButtonPosition(PlayCommand.BACK, x1, y1, x1+180,y1+180));
 
-        int x2 = screenW - 200;
-        int y2 = screenH - 200;
-        buttons.push(new ButtonPosition(PlayCommand.PAUSE, x2, y2, x2+180,y2+180));
+        int x1 = screenW - (width + cardGap) * 2;
+        int y1 = screenH - (height + cardGapH);
+        int buttonWidth = width;
+        buttons.push(new ButtonPosition(PlayCommand.BACK, x1, y1, x1+buttonWidth,y1+buttonWidth));
+
+        int x2 = screenW - (width + cardGap) * 1;
+        int y2 = screenH - (height + cardGapH);
+        buttons.push(new ButtonPosition(PlayCommand.PAUSE, x2, y2, x2+buttonWidth,y2+buttonWidth));
     }
 }

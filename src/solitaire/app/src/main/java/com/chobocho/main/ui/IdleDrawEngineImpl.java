@@ -20,7 +20,8 @@ public class IdleDrawEngineImpl implements DrawEngine {
 
     int width = 140;
     int height = 210;
-    int cardCapH = 30;
+    int gap = 30;
+    int cardGapH = 30;
 
     Paint paint = new Paint();
 
@@ -31,7 +32,8 @@ public class IdleDrawEngineImpl implements DrawEngine {
         screenH = profile.screenHeight();
         width = profile.cardWidth();
         height = profile.cardHeight();
-        cardCapH = profile.cardGapH();
+        gap = profile.cardGap();
+        cardGapH = profile.cardGapH();
     }
 
 
@@ -44,9 +46,9 @@ public class IdleDrawEngineImpl implements DrawEngine {
         g.drawBitmap(buttonImages[PLAY_GAME_IMAGE], null, new Rect( x1,  y1, x1+400, y1+200), paint);
         AndroidLog.i(TAG, "Event:" + Integer.toString(x1) + " : " + Integer.toString(y1));
 
-        paint.setTextSize(16);
+        paint.setTextSize(cardGapH);
         paint.setColor(Color.BLUE);
-        g.drawText("Version: " + boardProfile.getVersion(), 50, screenH - 180, paint);
+        g.drawText("Version: " + boardProfile.getVersion(), gap, screenH - cardGapH, paint);
     }
 
     private void onDrawBoardDeck(Canvas g, Bitmap[] cardImages, Solitare game) {
@@ -56,11 +58,11 @@ public class IdleDrawEngineImpl implements DrawEngine {
         for (int i = 6; i >= 0; --i) {
             int cap = 0;
             int x1 = cardGap + width * i + cardGap * i;
-            int y1 = cardGap + cardCapH + height + cap;
+            int y1 = cardGap + cardGapH + height + cap;
 
             for (int j = i, k = 0; j >= 0; --j, k++) {
                 g.drawBitmap(cardImages[CARD_BG_IMAGE], null, new Rect(x1, y1,  x1+width, y1+height), paint);
-                cap += cardCapH;
+                cap += cardGapH;
             }
         }
     }

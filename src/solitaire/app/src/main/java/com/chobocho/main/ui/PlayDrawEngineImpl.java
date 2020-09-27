@@ -16,7 +16,7 @@ import java.util.LinkedList;
 public class PlayDrawEngineImpl implements DrawEngine {
     final static String TAG = "PlayDrawEngineImpl";
     int screenW = 1080;
-    int screenH = 1920 - 100;
+    int screenH = 1920;
 
     int CARD_NONE_IMAGE = 53;
     int PAUSE_BUTTON = 3;
@@ -46,18 +46,19 @@ public class PlayDrawEngineImpl implements DrawEngine {
         onDrawResultDeck(g, cardImages, game, hideCard);
         onDrawPlayDeck(g, cardImages, game, hideCard);
 
-        int x1 = screenW - 400;
-        int y1 = screenH - 200;
-        g.drawBitmap(buttonImages[REVERT_BUTTON], null, new Rect(x1, y1, x1 + 180, y1 + 180), paint);
+        int x1 = screenW - (width + cardCap) * 2;
+        int y1 = screenH - (height + cardCapH);
+        int buttonWidth = width;
+        g.drawBitmap(buttonImages[REVERT_BUTTON], null, new Rect(x1, y1, x1 + buttonWidth, y1 + buttonWidth), paint);
 
-        int x2 = screenW - 200;
-        int y2 = screenH - 200;
-        g.drawBitmap(buttonImages[PAUSE_BUTTON], null, new Rect(x2, y2, x2 + 180, y2 + 180), paint);
+        int x2 = screenW - (width + cardCap) * 1;
+        int y2 = screenH - (height + cardCapH);
+        g.drawBitmap(buttonImages[PAUSE_BUTTON], null, new Rect(x2, y2, x2 + buttonWidth, y2 + buttonWidth), paint);
 
-
+        paint.setTextSize(cardCapH);
         paint.setColor(Color.BLUE);
-        paint.setTextSize(60);
-        g.drawText("Move: " + Integer.toString(game.getMoveCount()), 50, screenH - 80, paint);
+
+        g.drawText("Move: " + Integer.toString(game.getMoveCount()), cardCap, screenH - width, paint);
     }
 
     private void onDrawBoardDeck(Canvas g, Bitmap[] cardImages, Solitare game, LinkedList<Integer> hideCard) {
