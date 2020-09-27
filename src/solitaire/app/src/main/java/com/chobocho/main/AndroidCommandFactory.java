@@ -9,10 +9,10 @@ import com.chobocho.main.cmd.WinPlayCommandFactoryStateImpl;
 public class AndroidCommandFactory extends CommandFactory {
 
     public AndroidCommandFactory(BoardProfile boardProfile) {
-        idleState = new WinIdleCommandFactoryStateImpl();
-        playState = new WinPlayCommandFactoryStateImpl();
-        pauseState = new WinPauseCommandFactoryStateImpl();
-        endState = new WinEndCommandFactoryStateImpl();
+        idleState = new WinIdleCommandFactoryStateImpl(boardProfile);
+        playState = new WinPlayCommandFactoryStateImpl(boardProfile);
+        pauseState = new WinPauseCommandFactoryStateImpl(boardProfile);
+        endState = new WinEndCommandFactoryStateImpl(boardProfile);
         configState = new WinConfigCommandFactoryStateImpl(boardProfile);
     }
 

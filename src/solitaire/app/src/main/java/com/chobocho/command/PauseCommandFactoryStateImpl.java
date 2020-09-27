@@ -5,7 +5,16 @@ import java.util.LinkedList;
 public class PauseCommandFactoryStateImpl implements CommandFactoryState {
     protected LinkedList<ButtonPosition> buttons = new LinkedList<ButtonPosition>();
 
-    public PauseCommandFactoryStateImpl() {
+    protected  int screenW = 1080;
+    protected  int screenH = 1920;
+    protected  int cardWidth = 140;
+    protected int cardHeigth = 210;
+
+    public PauseCommandFactoryStateImpl(int screenW, int screenH, int cardW, int cardH) {
+        this.screenW = screenW;
+        this.screenH = screenH;
+        this.cardWidth = cardW;
+        this.cardHeigth =  cardH;
         addButtons();
     }
 

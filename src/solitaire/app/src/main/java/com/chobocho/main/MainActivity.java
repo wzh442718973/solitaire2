@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 
 import com.chobocho.command.CommandEngine;
 import com.chobocho.solitaire.Solitare;
@@ -28,7 +30,13 @@ public class MainActivity extends AppCompatActivity {
 
     protected void init() {
         String version = getVersion();
-        boardProfile = new BoardProfile(version);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        ((Display) display).getSize(size);
+        int width = size.x;
+        int height = size.y;
+
+        boardProfile = new BoardProfile(version, width, height);
         solitare = new SolitareImpl(new AndroidLog());
         cmdEngine = new CommandEngine(solitare);
         gameView = new CardgameView(this, boardProfile, solitare, cmdEngine);

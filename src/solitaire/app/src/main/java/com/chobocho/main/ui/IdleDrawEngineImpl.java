@@ -20,13 +20,18 @@ public class IdleDrawEngineImpl implements DrawEngine {
 
     int width = 140;
     int height = 210;
-    int cardCap = 30;
+    int cardCapH = 30;
 
     Paint paint = new Paint();
 
     BoardProfile boardProfile;
     public IdleDrawEngineImpl(BoardProfile profile) {
         boardProfile = profile;
+        screenW = profile.screenWidth();
+        screenH = profile.screenHeight();
+        width = profile.cardWidth();
+        height = profile.cardHeight();
+        cardCapH = profile.cardGapH();
     }
 
 
@@ -46,15 +51,16 @@ public class IdleDrawEngineImpl implements DrawEngine {
 
     private void onDrawBoardDeck(Canvas g, Bitmap[] cardImages, Solitare game) {
         int CARD_BG_IMAGE = boardProfile.getBG();
+        int cardGap = boardProfile.cardGap();
 
         for (int i = 6; i >= 0; --i) {
             int cap = 0;
-            int x1 = 10 + width * i + 10 * i;
-            int y1 = 40 + height + cap;
+            int x1 = cardGap + width * i + cardGap * i;
+            int y1 = cardGap + cardCapH + height + cap;
 
             for (int j = i, k = 0; j >= 0; --j, k++) {
                 g.drawBitmap(cardImages[CARD_BG_IMAGE], null, new Rect(x1, y1,  x1+width, y1+height), paint);
-                cap += cardCap;
+                cap += cardCapH;
             }
         }
     }

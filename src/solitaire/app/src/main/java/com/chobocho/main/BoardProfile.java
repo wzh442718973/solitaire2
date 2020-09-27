@@ -3,6 +3,7 @@ package com.chobocho.main;
 import com.chobocho.solitaire.Solitare;
 
 public class BoardProfile {
+    final static int cardCount = 8;
     final static public int BG0 = 0;
     final static public int BG1 = 55;
     final static public int BG2 = 56;
@@ -15,16 +16,57 @@ public class BoardProfile {
 
     final static public int CONFIG_BUTTON = 5;
 
+    public static int screenW = 1080;
+    public static int screenH = 1820;
+    public static int cardW = 120;
+    public static int cardH = 180;
+    public static int cardG = 10;
+    public static int cardGapHeight = 10;
+	
     public int bgImage;
     String version ="";
 
-    public BoardProfile(String version) {
+    public BoardProfile(String version, int width, int height) {
         bgImage = BG0;
         this.version = version;
+        setScreenSize(width, height);
+    }
+
+    public void setScreenSize(int w, int h) {
+        this.screenW = w;
+        this.screenH = h;
+
+        this.cardW = w/cardCount;
+        this.cardH = (int) (this.cardW * 1.5);
+        this.cardG = w/(cardCount*cardCount);
+        this.cardGapHeight = (int)(this.cardH * 0.3);
+    }
+
+    public int screenWidth() {
+        return this.screenW;
+    }
+
+    public int screenHeight() {
+        return this.screenH;
     }
 
     public String getVersion() {
         return version;
+    }	
+    public int cardWidth() {
+        return this.cardW;
+    }
+
+    public int cardHeight() {
+        return this.cardH;
+    }
+
+    public int cardGap() {
+        return this.cardG;
+    }
+
+    public int cardGapH() {
+        return this.cardGapHeight;
     }
 
     public void setBG(int newBG) {

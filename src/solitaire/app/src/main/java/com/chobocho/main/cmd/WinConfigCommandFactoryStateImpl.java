@@ -9,18 +9,17 @@ import com.chobocho.main.BoardProfile;
 public class WinConfigCommandFactoryStateImpl extends PauseCommandFactoryStateImpl implements CommandFactoryState {
     final static String TAG = "WinConfigCommandFactoryStateImpl";
 
-    BoardProfile profile;
-    int[] BGList = {profile.BG0, profile.BG1, profile.BG2, profile.BG3, profile.BG4, profile.BG5, profile.BG6, profile.BG7, profile.BG8};
+    BoardProfile boardProfile;
+    int[] BGList = {boardProfile.BG0, boardProfile.BG1, boardProfile.BG2, boardProfile.BG3, boardProfile.BG4, boardProfile.BG5, boardProfile.BG6, boardProfile.BG7, boardProfile.BG8};
 
-    public WinConfigCommandFactoryStateImpl(BoardProfile boardProfile) {
-        profile = boardProfile;
+    public WinConfigCommandFactoryStateImpl(BoardProfile profile) {
+        super(profile.screenWidth(), profile.screenHeight(), profile.cardWidth(), profile.cardHeight());
+        boardProfile = profile;
     }
 
     @Override
     public PlayCommand createCommand(int event, int x, int y) {
         AndroidLog.i(TAG, "Event:" + Integer.toString(event));
-        int width = 140;
-        int height = 210;
 
         if (event == CommandFactory.KEYPRESS_EVENT) {
             switch(x) {
@@ -32,10 +31,10 @@ public class WinConfigCommandFactoryStateImpl extends PauseCommandFactoryStateIm
         else if (event == CommandFactory.MOUSE_CLICK_EVENT) {
             for (ButtonPosition btn: buttons) {
                 if (btn.isInRange(x, y)) {
-                    int i = (x / width - 1)/2;
-                    int j = (y / height - 1)/2;
+                    int i = (x / cardWidth - 1)/2;
+                    int j = (y / cardHeigth - 1)/2;
                     int bgImage = i * 3 + j;
-                    profile.setBG(BGList[bgImage]);
+                    boardProfile.setBG(BGList[bgImage]);
                     AndroidLog.i(TAG, "New bgImage:" + Integer.toString(bgImage));
                     return new PlayCommand(btn.id, 0, 0);
                 }
@@ -54,14 +53,11 @@ public class WinConfigCommandFactoryStateImpl extends PauseCommandFactoryStateIm
     public void addButtons() {
         AndroidLog.i(TAG, "addButtons");
 
-        int width = 140;
-        int height = 210;
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                int x1 = width*(i+1) + i * width;
-                int y1 = height*(j+1) + j * height;
-                buttons.push(new ButtonPosition(PlayCommand.PAUSE, x1, y1, x1+width,y1+height));
+                int x1 = cardWidth + cardWidth*i*2;
+                int y1 = cardWidth + cardHeigth*j*2;
+                buttons.push(new ButtonPosition(PlayCommand.PAUSE, x1, y1, x1+cardWidth,y1+cardHeigth));
             }
         }
 

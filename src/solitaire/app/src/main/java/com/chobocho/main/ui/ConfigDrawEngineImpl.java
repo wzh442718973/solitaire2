@@ -14,9 +14,13 @@ import java.util.LinkedList;
 public class ConfigDrawEngineImpl implements DrawEngine {
     BoardProfile profile;
     Paint paint;
+    int width = 140;
+    int height = 210;
 
     public ConfigDrawEngineImpl(BoardProfile boardProfile) {
         profile = boardProfile;
+        width = profile.cardWidth();
+        height = profile.cardHeight();
         paint = new Paint();
     }
 
@@ -31,16 +35,12 @@ public class ConfigDrawEngineImpl implements DrawEngine {
 
         int CARD_BG = profile.getBG();
 
-        int width = 140;
-        int height = 210;
-
-
         int[] BGList = {profile.BG0, profile.BG1, profile.BG2, profile.BG3, profile.BG4, profile.BG5, profile.BG6, profile.BG7, profile.BG8};
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                int x1 = width*(i+1) + i * width;
-                int y1 = height*(j+1) + j * height;
+                int x1 = width + width*i*2;
+                int y1 = width + height*j*2;
                 g.drawBitmap(cardImages[BGList[i*3+j]], null, new Rect(x1, y1, x1 + width, y1 + height), paint);
             }
         }

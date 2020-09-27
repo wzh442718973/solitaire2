@@ -17,6 +17,7 @@ public class PauseDrawEngineImpl implements DrawEngine {
     int width = 140;
     int height = 210;
     int cardCap = 30;
+    int cardCapH = 30;
 
     int NEW_GAME_IMAGE = 0;
     int RESUME_GAME_IMAGE = 2;
@@ -26,20 +27,27 @@ public class PauseDrawEngineImpl implements DrawEngine {
 
     public PauseDrawEngineImpl(BoardProfile profile) {
         boardProfile = profile;
+        screenW = profile.screenWidth();
+        screenH = profile.screenHeight();
+        width = profile.cardWidth();
+        height = profile.cardHeight();
+        cardCap = profile.cardGap();
+        cardCapH = profile.cardGapH();
     }
 
     @Override
     public void onDraw(Canvas g, Solitare game, LinkedList<Integer> hideCard, Bitmap[] cardImages, Bitmap[] buttonImages) {
         int CARD_BG_IMAGE = boardProfile.getBG();
+        int startY = cardCap + cardCapH;
 
         for (int i = 6; i >= 0; --i) {
             int cap = 0;
-            int x1 = 10 + width * i + 10 * i;
+            int x1 = cardCap + (width + cardCap) * i;
 
             for (int j = i, k = 0; j >= 0; --j, k++) {
-                int y1 = 40 + height + cap;
+                int y1 = startY + height + cap;
                 g.drawBitmap(cardImages[CARD_BG_IMAGE], null, new Rect(x1, y1,  x1+width, y1+height), paint);
-                cap += cardCap;
+                cap += cardCapH;
             }
         }
 

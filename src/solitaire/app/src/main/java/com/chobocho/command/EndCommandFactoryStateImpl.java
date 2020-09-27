@@ -5,7 +5,13 @@ import java.util.LinkedList;
 public class EndCommandFactoryStateImpl implements CommandFactoryState {
     protected LinkedList<ButtonPosition> buttons = new LinkedList<ButtonPosition>();
 
-    public EndCommandFactoryStateImpl() {
+    protected int screenW = 1080;
+    protected int screenH = 1920;
+
+    public EndCommandFactoryStateImpl(int width, int height) {
+        screenW = width;
+        screenH = height;
+
         addButtons();
     }
 

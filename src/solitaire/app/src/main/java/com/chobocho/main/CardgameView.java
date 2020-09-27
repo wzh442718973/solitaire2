@@ -40,11 +40,6 @@ public class CardgameView extends View implements GameObserver {
     private String LOG_TAG = this.getClass().getName();
     private Context mContext;
 
-    private float scaleX = 1.0f;
-    private float scaleY = 1.0f;
-    private boolean isSetScale = false;
-    private boolean needScaleCanvas = false;
-
     private BoardProfile profile;
     private Solitare solitare;
     private CommandEngine cmdEngine;
@@ -84,8 +79,6 @@ public class CardgameView extends View implements GameObserver {
         this.profile = profile;
         this.solitare = solitare;
         this.cmdEngine = cmdEngine;
-        isSetScale = false;
-        needScaleCanvas = false;
         loadImage();
 
         this.idleDrawEngine = new IdleDrawEngineImpl(profile);
@@ -94,7 +87,7 @@ public class CardgameView extends View implements GameObserver {
         this.endDrawEngine = new EndDrawEngineImpl(profile);
         this.commonDrawEngine = new CommonDrawEngineImpl(profile);
         this.configDrawEngine = new ConfigDrawEngineImpl(profile);
-        this.deckPositoinManager = new DeckPositoinManagerImpl();
+        this.deckPositoinManager = new DeckPositoinManagerImpl(profile);
 
         drawEngine = this.idleDrawEngine;
 
@@ -187,30 +180,15 @@ public class CardgameView extends View implements GameObserver {
 
         Paint paint = new Paint();
 
-        if (!isSetScale) {
-            scaleX = canvas.getWidth() / 1080f;
-            scaleY = canvas.getHeight() / 1920f;
-            isSetScale = true;
-
-            if (scaleX <= 0.999f) {
-                needScaleCanvas = true;
-                Log.d(LOG_TAG, "Resolution of device is smaller than 1080");
-            }
-        }
-
-        if (needScaleCanvas) {
-            canvas.scale(scaleX, scaleY);
-        }
-
         commonDrawEngine.onDraw(canvas, solitare, hideCard, cardImages, buttonImage);
         drawEngine.onDraw(canvas, solitare, hideCard, cardImages, buttonImage);
 
-        int width = 120;
-        int height = 180;
+        int width = profile.cardWidth();
+        int height = profile.cardHeight();
         if (isMovingCard) {
             for (int i = 0; i < hideCard.size(); i++) {
                 int px = currentMouseX - mouseDx;
-                int py = (currentMouseY - mouseDy) + i * 60;
+                int py = (currentMouseY - mouseDy) + i * profile.cardGapH();
                 canvas.drawBitmap(cardImages[hideCard.get(i)], null, new Rect(px, py,  px+width, py+height), paint);
             }
         }
@@ -224,15 +202,8 @@ public class CardgameView extends View implements GameObserver {
             return false;
         }
 
-        Log.d(LOG_TAG, ">> scaleX: " + scaleX + " scaleY: " + scaleY);
-
         int x = (int) (event.getX());
         int y = (int) (event.getY());
-
-        if (needScaleCanvas) {
-            x = (int) (x / scaleX);
-            y = (int) (y / scaleY);
-        }
 
         Log.d(LOG_TAG, ">> X: " + x + " Y: " + y);
 

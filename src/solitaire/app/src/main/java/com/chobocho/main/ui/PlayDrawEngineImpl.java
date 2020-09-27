@@ -24,13 +24,20 @@ public class PlayDrawEngineImpl implements DrawEngine {
 
     int width = 140;
     int height = 210;
-    int cardCap = 30;
+    int cardCap = 10;
+    int cardCapH = 30;
     Paint paint = new Paint();
 
     BoardProfile boardProfile;
 
     public PlayDrawEngineImpl(BoardProfile profile) {
         boardProfile = profile;
+        screenW = profile.screenWidth();
+        screenH = profile.screenHeight();
+        width = profile.cardWidth();
+        height = profile.cardHeight();
+        cardCap = profile.cardGap();
+        cardCapH = profile.cardGapH();
     }
 
     @Override
@@ -67,16 +74,16 @@ public class PlayDrawEngineImpl implements DrawEngine {
                     int imgNumber = (card.getFigure().getValue() - 1) * 13 + card.getNumber().getValue();
 
                     if (!hideCard.contains(imgNumber)) {
-                        int x1 = 10 + width * i + 10 * i;
-                        int y1 = 40 + height + cap;
+                        int x1 = cardCap + width * i + cardCap * i;
+                        int y1 = cardCap + cardCapH + height + cap;
                         g.drawBitmap(cardImages[imgNumber], null, new Rect(x1, y1,  x1+width, y1+height), paint);
                     }
-                    cap += cardCap*2;
+                    cap += cardCapH;
                 } else {
-                    int x1 = 10 + width * i + 10 * i;
-                    int y1 = 40 + height + cap;
+                    int x1 = cardCap + width * i + cardCap * i;
+                    int y1 = cardCap + cardCapH + height + cap;
                     g.drawBitmap(cardImages[CARD_BG_IMAGE], null, new Rect(x1, y1,  x1+width, y1+height), paint);
-                    cap += cardCap;
+                    cap += cardCapH/2;
                 }
             }
         }
@@ -95,15 +102,15 @@ public class PlayDrawEngineImpl implements DrawEngine {
                 //WinLog.i(TAG, card.toString());
                 int imgNumber = (card.getFigure().getValue() - 1) * 13 + card.getNumber().getValue();
                 if (!hideCard.contains(imgNumber)) {
-                    int x1 = 10 + width * i + 10 * i;
-                    int y1 =  10;
+                    int x1 = cardCap + width * i + cardCap * i;
+                    int y1 = cardCap;
                     g.drawBitmap(cardImages[imgNumber], null, new Rect(x1, y1,  x1+width, y1+height), paint);
                 } else {
                     if (decks[i].size() > 1 ) {
                         Card preCard = decks[i].get(1);
                         int preImgNumber = (preCard.getFigure().getValue() - 1) * 13 + preCard.getNumber().getValue();
-                        int x1 = 10 + width * i + 10 * i;
-                        int y1 =  10;
+                        int x1 = cardCap + width * i + cardCap * i;
+                        int y1 = cardCap;
                         g.drawBitmap(cardImages[preImgNumber], null, new Rect(x1, y1,  x1+width, y1+height), paint);
                     }
                 }
@@ -115,8 +122,8 @@ public class PlayDrawEngineImpl implements DrawEngine {
 
         Deck deck = game.getDeck(Solitare.PLAY_DECK);
 
-        int x1 = 70 + width * 6;
-        int y1 = 10;
+        int x1 = cardCap + (cardCap+width) * 6;
+        int y1 = cardCap ;
 
         if (!deck.isEmpty() && deck.top().isOpen()) {
             Card card = deck.top();
@@ -134,8 +141,8 @@ public class PlayDrawEngineImpl implements DrawEngine {
             //WinLog.i(TAG, card.toString());
             int imgNumber = (card.getFigure().getValue() - 1) * 13 + card.getNumber().getValue();
 
-            x1 = 60 + width * 5;
-            y1 = 10;
+            x1 = cardCap + (cardCap + width) * 5;
+            y1 = cardCap;
 
             if (!hideCard.contains(imgNumber)) {
                 g.drawBitmap(cardImages[imgNumber], null, new Rect(x1, y1,  x1+width, y1+height), paint);

@@ -2,9 +2,16 @@ package com.chobocho.main.cmd;
 
 import com.chobocho.command.*;
 import com.chobocho.main.AndroidLog;
+import com.chobocho.main.BoardProfile;
 
 public class WinEndCommandFactoryStateImpl extends EndCommandFactoryStateImpl implements CommandFactoryState {
     final static String TAG = "WinEndCommandFactoryStateImpl";
+    BoardProfile boardProfile;
+
+    public WinEndCommandFactoryStateImpl(BoardProfile profile) {
+        super(profile.screenWidth(), profile.screenHeight());
+        boardProfile = profile;
+    }
 
     @Override
     public PlayCommand createCommand(int event, int x, int y) {
@@ -35,8 +42,6 @@ public class WinEndCommandFactoryStateImpl extends EndCommandFactoryStateImpl im
     @Override
     public void addButtons() {
         AndroidLog.i(TAG, "addButtons");
-        int screenW = 1080;
-        int screenH = 1920;
 
         int x1 = (screenW-400)/2;
         int y1 = (screenH-200)/2;

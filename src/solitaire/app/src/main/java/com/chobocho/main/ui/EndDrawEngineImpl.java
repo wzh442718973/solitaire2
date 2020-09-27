@@ -25,11 +25,18 @@ public class EndDrawEngineImpl implements DrawEngine {
     int width = 140;
     int height = 210;
     int cardCap = 30;
+    int cardCapH = 30;
     Paint paint = new Paint();
 
     BoardProfile boardProfile;
     public EndDrawEngineImpl(BoardProfile profile) {
         boardProfile = profile;
+        screenW = profile.screenWidth();
+        screenH = profile.screenHeight();
+        width = profile.cardWidth();
+        height = profile.cardHeight();
+        cardCap = profile.cardGap();
+        cardCapH = profile.cardGapH();
     }
 
     @Override
@@ -50,13 +57,13 @@ public class EndDrawEngineImpl implements DrawEngine {
                     continue;
                 }
                 int imgNumber = (card.getFigure().getValue() - 1) * 13 + card.getNumber().getValue();
-                int x1 = 10 + width * i + 10 * i;
-                int y1 = 10;
+                int x1 = cardCap + width * i + cardCap * i;
+                int y1 = cardCap;
                 g.drawBitmap(cardImages[imgNumber], null, new Rect(x1, y1,  x1+width, y1+height), paint);
             }
         }
 
-        g.drawBitmap(cardImages[CARD_NONE_IMAGE], null, new Rect( 70 + width * 6, 10,  (width + 10) * 7, 10 + height), paint);
+        g.drawBitmap(cardImages[CARD_NONE_IMAGE], null, new Rect( cardCap + (cardCap + width) * 6, cardCap,  (width + cardCap) * 7, cardCap + height), paint);
 
     }
 }
